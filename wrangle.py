@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from datetime import datetime
 
 
 def combine_data():
@@ -61,3 +62,24 @@ def get_clean_data():
     df['offense_description'] = df['offense_description'].str.lower()
     
     return df
+
+def create_fraud_df(df):
+    '''This function takes in the crime dataframe, and creates a new dataframe based on the categorization
+    of crime description. It also renames columns for usability, converts the date column to a DateTime type,
+    takes the date and transforms the index into a DateTime index, and adds a column called "count of crime",
+    which assigns a value of 1 to every row'''
+    #Uses str.contains to get fraud from description
+    fraud_df = df[df['offense_description'].str.contains('fraud')]
+    #Rename date column to make it easier
+    fraud_df.rename(columns = {'occurred_on_date':'date'}, inplace = True)
+    #Occured on date is an object, lets make it date time
+    fraud_df['date'] = pd.to_datetime(fraud_df['date'])
+    #adding a column to the dataframe to get a count of crime
+    fraud_df['count_of_crime'] = 1
+    #Remove hour from date time, since we aren't looking for that now
+    fraud_df['date'] = fraud_df['date'].dt.normalize()
+    # #Reset index to date time
+    fraud_df = fraud_df.set_index('date').sort_index()
+    fraud_df
+    
+    return fraud_df
