@@ -4,6 +4,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
 import scipy.stats as stats
+import datetime as dt
 
 
 
@@ -37,8 +38,8 @@ def monthly_fraud_viz(fraud_df):
     y = fraud_df.count_of_crime
     #Resampled by month, average taken
     y.resample('M').mean().plot(figsize=(12,8), color='cornflowerblue')
-    #Set theme
-    sns.set_theme()
+    #Set style
+    sns.set_style("darkgrid")
     #Plot it
     plt.title('Mean Fraud Crimes Resampled by Month', fontsize='18')
     plt.xlabel('Date')
