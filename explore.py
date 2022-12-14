@@ -27,3 +27,25 @@ def train_validate_test_split(df):
     test = df.loc['2020-03-16': '2021-03-15']
     
     return train, validate, test
+
+##--------------------Visualizations--------------------------##
+
+def monthly_fraud_viz(fraud_df):
+    #Aggregate sum of fraud by day
+    fraud_df = fraud_df.groupby(['date']).sum()
+    #Create series with just target variable
+    y = fraud_df.count_of_crime
+    #Resampled by month, average taken
+    y.resample('M').mean().plot(figsize=(12,8), color='cornflowerblue')
+    #Set theme
+    sns.set_theme()
+    #Plot it
+    plt.title('Mean Fraud Crimes Resampled by Month', fontsize='18')
+    plt.xlabel('Date')
+    plt.ylabel('Average Fraud Crimes')
+    #Set V lines and annotation for pandemic
+    plt.axvline(dt.datetime(2020, 3, 15), color='tab:red', linestyle= '--')
+    plt.axvline(dt.datetime(2021, 3, 15), color='tab:red', linestyle= '--')
+    plt.text(dt.datetime(2019,2,15), 15, 'Lockdown Began')
+    plt.text(dt.datetime(2021,4,15), 15, 'Lockdown Ended')
+    plt.show()
