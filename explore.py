@@ -56,6 +56,43 @@ def target_dist_viz(train):
     plt.ylabel('Frequency of Days', fontsize=16)
     plt.show()
 
+def monthly_crime_hist(fraud_df):
+    fraud_df = fraud_df.groupby(['date']).sum()
+    # ### Performing train-test split
+    train = fraud_df.loc[:'2019-03-14']
+    #Create y out of target variable
+    y = train.count_of_crime
+    #Set theme
+    sns.set_style("darkgrid")
+    #Plot it
+    y.groupby(y.index.month).sum().plot.bar(width=.9, ec='black', color='thistle')
+    plt.xticks(rotation=0)
+    plt.title('Pre-Pandemic Fraud Crimes Were Highest in February and August', fontsize=19)
+    plt.xlabel('Month', fontsize=16)
+    plt.ylabel('Count of Fraud Crimes', fontsize=16)
+    plt.show()
+
+def decomp_viz(fraud_df):
+    '''This function visualizes a decomposition of all data prior to covid'''
+    fraud_df = fraud_df.groupby(['date']).sum()
+    # ### Performing train-test split
+    train = fraud_df.loc[:'2019-03-14']
+    y = train.count_of_crime.resample('W').mean()
+    result = sm.tsa.seasonal_decompose(y)
+    decomposition = pd.DataFrame({
+    'y': result.observed,
+    'trend': result.trend,
+    'seasonal': result.seasonal,
+    'resid': result.resid,
+    })
+    #Plot it
+    sns.set_theme()
+    decomposition.iloc[:, 1:].plot()
+    plt.title('Some Seasonality is Present, with a Trend Down in 2017', fontsize=20)
+    plt.xlabel('Date by Month', fontsize=16)
+    plt.show()
+    #Now plotting it separately
+    result.plot()
 
 def monthly_fraud_viz(fraud_df):
     '''This function visualizes mean fraud crimes by month'''
