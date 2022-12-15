@@ -32,6 +32,7 @@ def train_validate_test_split(df):
 ##--------------------Visualizations--------------------------##
 
 def monthly_fraud_viz(fraud_df):
+    '''This function visualizes mean fraud crimes by month'''
     #Aggregate sum of fraud by day
     fraud_df = fraud_df.groupby(['date']).sum()
     #Create series with just target variable
@@ -49,4 +50,23 @@ def monthly_fraud_viz(fraud_df):
     plt.axvline(dt.datetime(2021, 3, 15), color='tab:red', linestyle= '--')
     plt.text(dt.datetime(2019,2,15), 15, 'Lockdown Began')
     plt.text(dt.datetime(2021,4,15), 15, 'Lockdown Ended')
+    plt.show()
+    
+def train_test_viz(train, validate, test):
+    '''This function visualizes the train, validate, test split utilized in modeling'''
+    #Set Style
+    sns.set_style('darkgrid')
+    # change the figure size
+    plt.figure(figsize=(12,8))
+    plt.title('Distribution of Train, Test, and Validate', fontsize='18')
+    #Plot it
+    plt.plot(train.index, train.count_of_crime, color='powderblue')
+    plt.plot(validate.index, validate.count_of_crime, color='lightskyblue')
+    plt.plot(test.index, test.count_of_crime, color='dodgerblue')
+    #Label Axes
+    plt.xlabel('Date')
+    plt.ylabel('Count of Fraud Crimes')
+    #Annotation
+    plt.axvline(dt.datetime(2020, 3, 15), color='crimson', linestyle= '--')
+    plt.text(dt.datetime(2019,1,30), 25, 'COVID Pandemic Begins')
     plt.show()
