@@ -42,18 +42,18 @@ def target_dist_viz(train):
     #define font family to use for all text
     plt.rcParams['font.sans-serif'] = ['Verdana']
     #Distribution of target variable histogram
-    fig, ax = plt.subplots(figsize =(10, 7))
+    fig, ax = plt.subplots(figsize =(11, 7))
     #Plot it
     y.plot.hist(color='paleturquoise',ec='gray')
     #Title
-    plt.title('2017-2019 Distribution of Fraud Crimes Occuring Per Day')
+    plt.title('2017-2019 Distribution of Fraud Crimes Occuring Per Day', fontsize=20)
     #Annotation and labels
     dfmean = y.mean()
     plt.axvline(dfmean, color = 'indianred', linestyle=':', linewidth=2)
-    ax.text(dfmean, 0.99, 'Mean', color='indianred', ha='right', va='top', rotation=90,
+    ax.text(dfmean, 0.99, 'Mean', color='indianred', ha='right', va='top', rotation=90,fontsize=14,
             transform=ax.get_xaxis_transform())
-    plt.xlabel('Daily Number of Fraud Crimes Occuring')
-    plt.ylabel('Frequency of Days')
+    plt.xlabel('Daily Number of Fraud Crimes Occuring', fontsize=16)
+    plt.ylabel('Frequency of Days', fontsize=16)
     plt.show()
 
 
@@ -64,18 +64,18 @@ def monthly_fraud_viz(fraud_df):
     #Create series with just target variable
     y = fraud_df.count_of_crime
     #Resampled by month, average taken
-    y.resample('M').mean().plot(figsize=(12,8), color='cornflowerblue')
+    y.resample('M').mean().plot(figsize=(11,7), color='cornflowerblue')
     #Set style
     sns.set_style("darkgrid")
     #Plot it
-    plt.title('Mean Fraud Crimes Resampled by Month', fontsize='18')
-    plt.xlabel('Date')
-    plt.ylabel('Average Fraud Crimes')
+    plt.title('Mean Fraud Crimes Resampled by Month', fontsize=20)
+    plt.xlabel('Date', fontsize=16)
+    plt.ylabel('Average Fraud Crimes', fontsize=16)
     #Set V lines and annotation for pandemic
     plt.axvline(dt.datetime(2020, 3, 15), color='tab:red', linestyle= '--')
     plt.axvline(dt.datetime(2021, 3, 15), color='tab:red', linestyle= '--')
-    plt.text(dt.datetime(2019,2,15), 15, 'Lockdown Began')
-    plt.text(dt.datetime(2021,4,15), 15, 'Lockdown Ended')
+    plt.text(dt.datetime(2018,10,15), 15, 'Lockdown Began', fontsize=14)
+    plt.text(dt.datetime(2021,4,15), 15, 'Lockdown Ended', fontsize=14)
     plt.show()
     
 def train_test_viz(train, validate, test):
@@ -83,16 +83,16 @@ def train_test_viz(train, validate, test):
     #Set Style
     sns.set_style('darkgrid')
     # change the figure size
-    plt.figure(figsize=(12,8))
-    plt.title('Distribution of Train, Test, and Validate', fontsize='18')
+    plt.figure(figsize=(10,7))
+    plt.title('Distribution of Train, Test, and Validate', fontsize='20')
     #Plot it
     plt.plot(train.index, train.count_of_crime, color='powderblue')
     plt.plot(validate.index, validate.count_of_crime, color='lightskyblue')
     plt.plot(test.index, test.count_of_crime, color='dodgerblue')
     #Label Axes
-    plt.xlabel('Date')
-    plt.ylabel('Count of Fraud Crimes')
+    plt.xlabel('Date', fontsize=16)
+    plt.ylabel('Count of Fraud Crimes', fontsize=16)
     #Annotation
     plt.axvline(dt.datetime(2020, 3, 15), color='crimson', linestyle= '--')
-    plt.text(dt.datetime(2019,1,30), 25, 'COVID Pandemic Begins')
+    plt.text(dt.datetime(2018,11,30), 25, 'COVID Pandemic Begins', fontsize=14)
     plt.show()
