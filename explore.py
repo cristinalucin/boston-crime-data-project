@@ -31,6 +31,32 @@ def train_validate_test_split(df):
 
 ##--------------------Visualizations--------------------------##
 
+def target_dist_viz(train):
+    '''This function visualizes the distribution of the target variable (Count of
+    Crimes) by visualizing its frequency in training data. X axis represents number of
+    crimes reported by day'''
+    #define y for plotting
+    y = train.count_of_crime
+    #Set style
+    sns.set_style('darkgrid')
+    #define font family to use for all text
+    plt.rcParams['font.sans-serif'] = ['Verdana']
+    #Distribution of target variable histogram
+    fig, ax = plt.subplots(figsize =(10, 7))
+    #Plot it
+    y.plot.hist(color='paleturquoise',ec='gray')
+    #Title
+    plt.title('2017-2019 Distribution of Fraud Crimes Occuring Per Day')
+    #Annotation and labels
+    dfmean = y.mean()
+    plt.axvline(dfmean, color = 'indianred', linestyle=':', linewidth=2)
+    ax.text(dfmean, 0.99, 'Mean', color='indianred', ha='right', va='top', rotation=90,
+            transform=ax.get_xaxis_transform())
+    plt.xlabel('Daily Number of Fraud Crimes Occuring')
+    plt.ylabel('Frequency of Days')
+    plt.show()
+
+
 def monthly_fraud_viz(fraud_df):
     '''This function visualizes mean fraud crimes by month'''
     #Aggregate sum of fraud by day
