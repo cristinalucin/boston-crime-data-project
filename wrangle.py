@@ -2,6 +2,37 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 
+def aggregate_csv():
+    '''This function concatenates all yearly crime reports and returns one 
+    dataframe with all project data'''
+    #Get data from CSV files
+    df2015 = pd.read_csv("crime-incident-reports-2015.csv")
+    df2016 = pd.read_csv("crime-incident-reports-2016.csv")
+    df2017 = pd.read_csv("crime-incident-reports-2017.csv")
+    df2018 = pd.read_csv("crime-incident-reports-2018.csv")
+    df2019 = pd.read_csv("crime-incident-reports-2019.csv")
+    df2020 = pd.read_csv("crime-incident-reports-2020.csv")
+    df2021 = pd.read_csv("crime-incident-reports-2021.csv")
+    df2022 = pd.read_csv("crime-incident-reports-2022.csv")
+    # # Forming a table from DFs
+    table = []
+    table.append(df2015)
+    table.append(df2016)
+    table.append(df2017)
+    table.append(df2018)
+    table.append(df2019)
+    table.append(df2020)
+    table.append(df2021)
+    table.append(df2022)
+    # # #Combine all tables, ignore index
+    df = pd.concat(table, ignore_index=True)
+    # #Save data as combined csv
+    df.to_csv('boston_crime.csv')
+    #Get CSV from file
+    df = pd.read_csv('boston_crime.csv', index_col=0)
+    
+    return df
+
 
 def combine_data():
     ''' Combine retrieved CSV files from Boston Crime Incident Reports Website
