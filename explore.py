@@ -8,6 +8,7 @@ import datetime as dt
 
 
 
+
 ##------------------------Train-Test Split----------------------##
 
 def train_validate_test_split(df):
@@ -57,17 +58,19 @@ def target_dist_viz(train):
     plt.show()
 
 def monthly_crime_hist(fraud_df):
+    '''This function visualizes pre-pandemic fraud crime by month'''
+    #grouping by day to aggregate
     fraud_df = fraud_df.groupby(['date']).sum()
-    # ### Performing train-test split
-    train = fraud_df.loc[:'2019-03-14']
+    # ### Taking pre-pandemic data
+    pre_pandemic = fraud_df.loc[:'2020-03-15']
     #Create y out of target variable
-    y = train.count_of_crime
+    y = pre_pandemic.count_of_crime
     #Set theme
     sns.set_style("darkgrid")
     #Plot it
     y.groupby(y.index.month).sum().plot.bar(width=.9, ec='black', color='thistle')
     plt.xticks(rotation=0)
-    plt.title('Pre-Pandemic Fraud Crimes Were Highest in February and August', fontsize=19)
+    plt.title('Pre-Pandemic Fraud Crimes are Lowest in April and May', fontsize=20)
     plt.xlabel('Month', fontsize=16)
     plt.ylabel('Count of Fraud Crimes', fontsize=16)
     plt.show()
@@ -133,3 +136,70 @@ def train_test_viz(train, validate, test):
     plt.axvline(dt.datetime(2020, 3, 15), color='crimson', linestyle= '--')
     plt.text(dt.datetime(2018,11,30), 25, 'COVID Pandemic Begins', fontsize=14)
     plt.show()
+    
+##----------------------------Statistics---------------------------------##
+
+def get_april_ttest(fraud_df):
+    '''This function compares fraud rates in the month of April, pre-pandemic, to fraud rates
+    of all other months'''
+    #Making df of just april
+    april_df = fraud_df[(fraud_df.month == 4) & (fraud_df.year < 2020)]
+    #Now grouping by day
+    april_df = april_df.groupby(['date']).sum()
+    #Making a population df for stats test
+    fraud_df= fraud_df.groupby(['date']).sum()
+    #Create y out of target variable
+    y = april_df.count_of_crime
+    z = fraud_df.count_of_crime
+    # Taking the mean for the t-test
+    overall_population = z.mean()
+    #Setting alpha and running the test
+    alpha = 0.05
+    t, p = stats.ttest_1samp(y, overall_population)
+    
+    return print(f't-statistic:{round(t,3)}, P-Value:{round(p/2,3)}, alpha={alpha}')
+
+def get_2017_ttest(fraud_df):
+    '''This function compares the mean of fraud crimes in 2017 to the mean of fraud crimes for the
+    dataframe using a one-sample t-test'''
+    #Separate 2017 values
+    fraud_2017 = fraud_df.loc['2017-01-01':'2018-1-1']
+    #Now grouping by day
+    fraud_2017 = fraud_2017.groupby(['date']).sum()
+    #Making a population df for stats test
+    fraud_df= fraud_df.groupby(['date']).sum()
+    #Create y out of target variable
+    y = fraud_2017.count_of_crime
+    z = fraud_df.count_of_crime
+    # Taking the mean for the t-test
+    overall_population = z.mean()
+    #Setting alpha and running the test
+    alpha = 0.05
+    t, p = stats.ttest_1samp(y, overall_population)
+    
+    return print(f't-statistic:{round(t,3)}, P-Value:{round(p/2,3)}, alpha={alpha}')
+
+def pre_post_t_test(fraud_df):
+    '''get t-test for pre and post covid fraud crimes'''
+    #Seperate samples into pre-covid and post-covid lockdown
+    post_covid_df = fraud_df['2021-03-16':]
+    pre_covid_df = fraud_df['2018-03-15':'2020-03-16']
+    #Grouping by day
+    post_covid_df = post_covid_df.groupby(['date']).sum()
+    pre_covid_df = pre_covid_df.groupby(['date']).sum()
+    #Run t-test on these groups, variances are not equal
+    t, p = stats.ttest_ind(pre_covid_df.count_of_crime, post_covid_df.count_of_crime, equal_var=False)
+    #Set Alpha
+    alpha = 0.05
+    
+    null_hypothesis = "Fraud crime rates pre-pandemic are less than or equal to fraud crime rates post pandemic."
+    alternative_hypothesis = "Fraud crime rates pre-pandemic are greater than fraud crime rates post pandemic."
+    
+    if (p/2 < alpha) & (t > 0):
+        print("Reject the null hypothesis that", null_hypothesis)
+        print("Sufficient evidence to move forward understanding that", alternative_hypothesis)
+    else:
+        print("Fail to reject the null")
+
+    print(f't = {t:.4f}')
+    print(f'p = {p:.4f}') 

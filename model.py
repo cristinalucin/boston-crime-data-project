@@ -131,15 +131,27 @@ def eval_timeseries_models(train,validate,test):
     
     return scores
 
-def evaluate_post_test(df, target_var):
-    '''This function uses the simple average model to make predictions on test data,
-    and returns the RMSE from this model'''
-    #Splitting data
-    train, validate, test = post_pandemic_split(df)
-    #Make predictions from trainbased on simple average
-    crime = round(train['count_of_crime'].mean(), 2)
-    yhat_df = pd.DataFrame({'count_of_crime': [crime]}, index = test.index)
-    #Calculate RMSE based on predictions
-    rmse = round(sqrt(mean_squared_error(test[target_var], yhat_df[target_var])), 0)
+def eval_simple_test(train,validate,test):
+    '''This function evaluates simple average model, taking in train, validate
+    and test, and producing a dataframe with their performances on train,validate and test'''
+    #Making predictions dataframes
+    predictions_train = pd.DataFrame(index=train.index)
+    predictions_validate = pd.DataFrame(index=validate.index)
+    predictions_test = pd.DataFrame(index=test.index)
     
-    return rmse
+    #Creating scores dataframe
+    scores = pd.DataFrame(columns=['model_name', 'train_score', 'validate_score', 'test_score'])
+    
+    #Simple average
+    avg_crime = round(train['count_of_crime'].mean(), 2)
+    predictions_train['simple_average'] = avg_crime
+    predictions_validate['simple_average'] = avg_crime
+    predictions_test['simple_average'] = avg_crime
+    RMSE_train = round(np.sqrt(mean_squared_error(train['count_of_crime'], predictions_train['simple_average'])))
+    RMSE_validate = round(np.sqrt(mean_squared_error(validate['count_of_crime'], predictions_validate['simple_average'])))
+    RMSE_test=round(np.sqrt(mean_squared_error(test['count_of_crime'], predictions_test['simple_average'])))
+    model_name='simple_average'
+    scores.loc[len(scores)] = [model_name, RMSE_train, RMSE_validate, RMSE_test]
+    
+    
+    return scores
