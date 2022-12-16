@@ -26,11 +26,12 @@ This project was created to examine crime data from the City of Boston. Specific
 * Aquire and clean the data
 
 * Explore data in search of time series patterns for fraud crimes
-    * Answer the following initial questions
+    * Answer the following questions
         * What was the average fraud crime rate in the two years immediately prior to the pandemic?
         * Are certain months more likely to demonstrate greater reported fraud crimes?
         * Do Fraud Crimes follow a seasonal pattern?
         * Is the downtrend seen in 2017 significant?
+        * Are pre-pandemic Fraud crime levels equal to Fraud crime levels post-pandemic?
         
 * Develop a Model to predict fraud crimes
     * Evaluate models on train and validate data
