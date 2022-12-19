@@ -64,9 +64,8 @@ This project was created to examine crime data from the City of Boston. Specific
 
 # Steps to Reproduce
 1) Clone this repository
-2) Download Boston Crime Data from analyze Boston (https://data.boston.gov/dataset/crime-incident-reports-august-2015-to-date-source-new-system)
-3) Put the data in  the file containing the cloned repo
-4) Utilize code from project notebook to aggregate data into one .CSV, which can be used locally
+2) Put the data in  the file containing the cloned repo
+3) Utilize code from project notebook to aggregate data into one .CSV, which can be used locally
 4) Run notebook
 
 # Takeaways and Conclusions
