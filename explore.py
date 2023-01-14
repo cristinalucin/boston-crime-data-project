@@ -114,7 +114,7 @@ def monthly_fraud_viz(fraud_df):
     #Set V lines and annotation for pandemic
     plt.axvline(dt.datetime(2020, 3, 15), color='tab:red', linestyle= '--')
     plt.axvline(dt.datetime(2021, 3, 15), color='tab:red', linestyle= '--')
-    plt.text(dt.datetime(2018,10,15), 15, 'Lockdown Began', fontsize=14)
+    plt.text(dt.datetime(2018,7,15), 15, 'Lockdown Began', fontsize=14)
     plt.text(dt.datetime(2021,4,15), 15, 'Lockdown Ended', fontsize=14)
     plt.show()
     
