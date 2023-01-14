@@ -43,7 +43,7 @@ def target_dist_viz(train):
     #define font family to use for all text
     plt.rcParams['font.sans-serif'] = ['Verdana']
     #Distribution of target variable histogram
-    fig, ax = plt.subplots(figsize =(11, 7))
+    fig, ax = plt.subplots(figsize =(9, 6))
     #Plot it
     y.plot.hist(color='paleturquoise',ec='gray')
     #Title
@@ -68,7 +68,7 @@ def monthly_crime_hist(fraud_df):
     #Set theme
     sns.set_style("darkgrid")
     #Plot it
-    y.groupby(y.index.month).sum().plot.bar(width=.9, ec='black', color='thistle')
+    y.groupby(y.index.month).sum().plot.bar(figsize=(9,6), width=.9, ec='black', color='thistle')
     plt.xticks(rotation=0)
     plt.title('Pre-Pandemic Fraud Crimes are Lowest in April and May', fontsize=20)
     plt.xlabel('Month', fontsize=16)
@@ -104,7 +104,7 @@ def monthly_fraud_viz(fraud_df):
     #Create series with just target variable
     y = fraud_df.count_of_crime
     #Resampled by month, average taken
-    y.resample('M').mean().plot(figsize=(11,7), color='cornflowerblue')
+    y.resample('M').mean().plot(figsize=(9,6), color='cornflowerblue')
     #Set style
     sns.set_style("darkgrid")
     #Plot it
@@ -123,7 +123,7 @@ def train_test_viz(train, validate, test):
     #Set Style
     sns.set_style('darkgrid')
     # change the figure size
-    plt.figure(figsize=(10,7))
+    plt.figure(figsize=(9,6))
     plt.title('Distribution of Train, Test, and Validate', fontsize='20')
     #Plot it
     plt.plot(train.index, train.count_of_crime, color='powderblue')
